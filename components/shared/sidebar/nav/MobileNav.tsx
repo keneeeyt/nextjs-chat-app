@@ -6,6 +6,7 @@ import { UserButton } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useConversation } from "@/hooks/useConversation";
+import { ThemeToggle } from "@/components/ui/theme/theme-toggle";
 
 const MobileNav = () => {
   const paths = useNavigation();
@@ -37,6 +38,9 @@ const MobileNav = () => {
           )
         })
        }
+       <li>
+        <ThemeToggle />
+       </li>
        <li>
         <UserButton />
      </li>
