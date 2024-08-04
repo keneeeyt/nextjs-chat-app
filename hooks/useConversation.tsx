@@ -9,7 +9,7 @@ export const useConversation = () => {
     [params?.conversationId]
   );
 
-  const isActive = useMemo(() => !!conversationId, []);
+  const isActive = useMemo(() => !!conversationId, [conversationId]);
 
   return {
     isActive,
