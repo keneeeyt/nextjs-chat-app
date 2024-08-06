@@ -20,10 +20,10 @@ type Props = {
 
 const ConversationPage = ({ params: { conversationId } }: Props) => {
   const conversation = useQuery(api.conversation.get, { id: conversationId });
-  const [removeFriendDialogOpen, setRemoveFriendDialogOpen] = useState(false)
-  const [deleteGroupDialogOpen, setDeleteGroupDialogOpen] = useState(false)
-  const [leaveGroupDialogOpen, setleaveGroupDialogOpen] = useState(false)
-  const [callType, setCallType] = useState<"audio" | "video" | null>(null)
+  const [removeFriendDialogOpen, setRemoveFriendDialogOpen] = useState(false);
+  const [deleteGroupDialogOpen, setDeleteGroupDialogOpen] = useState(false);
+  const [leaveGroupDialogOpen, setleaveGroupDialogOpen] = useState(false);
+  const [callType, setCallType] = useState<"audio" | "video" | null>(null);
 
   return conversation === undefined ? (
     <div className="w-full h-full flex items-center justify-center">
@@ -35,9 +35,21 @@ const ConversationPage = ({ params: { conversationId } }: Props) => {
     </p>
   ) : (
     <ConversationContainer>
-      <RemoveFriendDialog conversationId={conversationId} open={removeFriendDialogOpen} setOpen={setRemoveFriendDialogOpen} />
-      <LeaveGroupDialog conversationId={conversationId} open={leaveGroupDialogOpen} setOpen={setleaveGroupDialogOpen} />
-      <DeleteGroupDialog conversationId={conversationId} open={deleteGroupDialogOpen} setOpen={setDeleteGroupDialogOpen} />
+      <RemoveFriendDialog
+        conversationId={conversationId}
+        open={removeFriendDialogOpen}
+        setOpen={setRemoveFriendDialogOpen}
+      />
+      <LeaveGroupDialog
+        conversationId={conversationId}
+        open={leaveGroupDialogOpen}
+        setOpen={setleaveGroupDialogOpen}
+      />
+      <DeleteGroupDialog
+        conversationId={conversationId}
+        open={deleteGroupDialogOpen}
+        setOpen={setDeleteGroupDialogOpen}
+      />
       <Header
         name={
           (conversation.isGroup
@@ -48,27 +60,39 @@ const ConversationPage = ({ params: { conversationId } }: Props) => {
           conversation.isGroup ? undefined : conversation.otherMember?.imageUrl
         }
         options={
-          conversation.isGroup ? [
-            {
-              label: "Leave Group",
-              destructive: false,
-              onClick: () => setleaveGroupDialogOpen(true),
-            },
-            {
-              label: "Delete Group",
-              destructive: true,
-              onClick: () => setDeleteGroupDialogOpen(true),
-            }
-          ] : [
-            {
-              label: "Delete Friend",
-              destructive: true,
-              onClick: () => setRemoveFriendDialogOpen(true),
-            }
-          ]
+          conversation.isGroup
+            ? [
+                {
+                  label: "Leave Group",
+                  destructive: false,
+                  onClick: () => setleaveGroupDialogOpen(true),
+                },
+                {
+                  label: "Delete Group",
+                  destructive: true,
+                  onClick: () => setDeleteGroupDialogOpen(true),
+                },
+              ]
+            : [
+                {
+                  label: "Delete Friend",
+                  destructive: true,
+                  onClick: () => setRemoveFriendDialogOpen(true),
+                },
+              ]
         }
       />
-      <Body />
+      <Body
+        members={
+          conversation.isGroup
+            ? conversation.otherMembers
+              ? conversation.otherMembers
+              : []
+            : conversation.otherMember
+              ? [conversation.otherMember]
+              : []
+        }
+      />
       <ChatInput />
     </ConversationContainer>
   );
