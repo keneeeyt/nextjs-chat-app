@@ -1,4 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Id } from "@/convex/_generated/dataModel";
 import { User } from "lucide-react";
@@ -10,13 +11,14 @@ type Props = {
  name: string;
   lastMessageSender?: string;
   lastMessageContent?: string;
+  unseenCount: number;
 };
 
-const GroupConversationItem = ({ id, name,  lastMessageContent, lastMessageSender }: Props) => {
+const GroupConversationItem = ({ id, name,  lastMessageContent, lastMessageSender, unseenCount }: Props) => {
 
   return (
     <Link href={`/conversations/${id}`} className="w-full">
-      <Card className="p-2 flex flex-row items-center gap-4">
+      <Card className="p-2 flex flex-row items-center justify-between">
         <div className="flex flex-row items-center gap-4 truncate">
           <Avatar>
             <AvatarFallback>
@@ -33,6 +35,7 @@ const GroupConversationItem = ({ id, name,  lastMessageContent, lastMessageSende
             </p>}
           </div>
         </div>
+        {unseenCount ? <Badge>{unseenCount}</Badge> : null} 
       </Card>
     </Link>
   );
